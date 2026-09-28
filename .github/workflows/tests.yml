@@ -1,0 +1,28 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate Python and SQL pipeline
+        run: python3 analysis/pipeline.py --check --output /tmp/product-signal-summary.json
+      - name: Run Python tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Check browser modules
+        run: |
+          node --check dist/app.js
+          node --check dist/webmcp.js
+      - name: Run WebMCP tests
+        run: node --test tests/*.test.js

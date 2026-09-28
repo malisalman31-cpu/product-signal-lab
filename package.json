@@ -1,0 +1,17 @@
+{
+  "name": "product-signal-lab",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 4182 --directory dist --bind 127.0.0.1",
+    "build:data": "python3 analysis/pipeline.py",
+    "check": "node --check dist/app.js && node --check dist/webmcp.js && python3 analysis/pipeline.py --check --output /tmp/product-signal-summary.json",
+    "test": "node --test tests/*.test.js && python3 -m unittest discover -s tests -p 'test_*.py'"
+  },
+  "engines": {
+    "node": ">=20",
+    "python": ">=3.11"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A Python and SQL product analytics lab for funnels, retention cohorts, and experiment decisions.">
+    <title>Product Signal Lab</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2308121f'/%3E%3Cpath d='M6 22l6-7 5 3 9-10' fill='none' stroke='%2399f65a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='26' cy='8' r='3' fill='%2353d6ff'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#dashboard" aria-label="Product Signal Lab home">
+        <span class="brand-mark" aria-hidden="true">↗</span>
+        <span>Product Signal <strong>Lab</strong></span>
+      </a>
+      <div class="pipeline-status"><span></span> Python + SQL pipeline healthy</div>
+    </header>
+
+    <main id="dashboard">
+      <section class="workspace" aria-labelledby="page-title">
+        <div class="workspace-heading">
+          <div>
+            <p class="eyebrow">PRODUCT GROWTH DECISION CONSOLE</p>
+            <h1 id="page-title">Find the leak. Measure the lift.</h1>
+          </div>
+          <p class="dataset-note">30,000 synthetic SaaS users · 12 signup cohorts · deterministic pipeline</p>
+        </div>
+
+        <form class="filters" aria-label="Analysis filters">
+          <label>Acquisition channel
+            <select id="channel-filter">
+              <option>All channels</option>
+              <option>Organic</option>
+              <option>Paid Search</option>
+              <option>Social</option>
+              <option>Referral</option>
+              <option>Partnership</option>
+            </select>
+          </label>
+          <label>Platform
+            <select id="platform-filter">
+              <option>All platforms</option>
+              <option>Web</option>
+              <option>iOS</option>
+              <option>Android</option>
+            </select>
+          </label>
+          <button type="button" class="export-button" id="export-button" disabled>Export filtered summary</button>
+        </form>
+
+        <section class="metrics" aria-label="Product health metrics">
+          <article><span>Activation</span><strong id="metric-activation">61.8%</strong><small id="activation-note">Loading pipeline result</small></article>
+          <article><span>Paid conversion</span><strong id="metric-conversion">18.7%</strong><small id="conversion-note">Loading pipeline result</small></article>
+          <article><span>Week 4 retention</span><strong id="metric-retention">34.6%</strong><small id="retention-note">Loading pipeline result</small></article>
+          <article><span>Experiment lift</span><strong id="metric-lift">+9.8%</strong><small id="lift-note">Loading pipeline result</small></article>
+        </section>
+
+        <div class="analysis-grid">
+          <section class="panel funnel-panel" aria-labelledby="funnel-title">
+            <div class="panel-heading">
+              <div><p class="eyebrow">JOURNEY</p><h2 id="funnel-title">Activation funnel</h2></div>
+              <span id="segment-label">All users</span>
+            </div>
+            <ol class="funnel" id="funnel">
+              <li style="--width: 100%"><span>Signed up</span><strong>30,000</strong><small>100%</small></li>
+              <li style="--width: 81%"><span>Completed onboarding</span><strong>24,300</strong><small>81.0%</small></li>
+              <li style="--width: 62%"><span>Activated</span><strong>18,540</strong><small>61.8%</small></li>
+              <li style="--width: 19%"><span>Subscribed</span><strong>5,610</strong><small>18.7%</small></li>
+            </ol>
+          </section>
+
+          <aside class="panel decision-card" aria-labelledby="decision-title">
+            <p class="eyebrow">EXPERIMENT READOUT</p>
+            <h2 id="decision-title">Ship treatment B</h2>
+            <p id="decision-copy">The guided checklist improved activation with a statistically reliable lift and no retention regression.</p>
+            <div class="experiment-bars" aria-label="Experiment conversion comparison">
+              <div><span>Control A</span><i id="control-bar" style="--bar: 57%"></i><strong id="control-rate">57.1%</strong></div>
+              <div><span>Treatment B</span><i id="treatment-bar" style="--bar: 63%"></i><strong id="treatment-rate">62.7%</strong></div>
+            </div>
+            <dl>
+              <div><dt>Absolute lift</dt><dd id="absolute-lift">+5.6 pts</dd></div>
+              <div><dt>95% interval</dt><dd id="confidence-interval">+1.2 to +10.0</dd></div>
+              <div><dt>Sample</dt><dd id="experiment-sample">10,240 users</dd></div>
+            </dl>
+          </aside>
+        </div>
+
+        <section class="panel retention-panel" aria-labelledby="retention-title">
+          <div class="panel-heading">
+            <div><p class="eyebrow">COHORTS</p><h2 id="retention-title">Weekly retention</h2></div>
+            <span>Signup week → active week</span>
+          </div>
+          <div class="retention-scroll">
+            <table id="retention-table">
+              <caption class="sr-only">Retention percentage by signup cohort and elapsed week</caption>
+              <thead><tr><th>Cohort</th><th>Users</th><th>W0</th><th>W1</th><th>W2</th><th>W3</th><th>W4</th><th>W5</th><th>W6</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="methods" aria-labelledby="methods-title">
+          <div class="methods-copy">
+            <p class="eyebrow">REPRODUCIBLE ANALYSIS</p>
+            <h2 id="methods-title">The decision has an audit trail.</h2>
+            <p>Python generates deterministic user journeys and validates funnel order. SQLite applies indexed segment queries. A two-proportion z-test turns the experiment result into a documented ship or hold decision.</p>
+            <ul>
+              <li><strong>30,000</strong> users generated with a fixed seed</li>
+              <li><strong>24</strong> precomputed channel and platform segments</li>
+              <li><strong>3</strong> indexes verified with query plans</li>
+            </ul>
+          </div>
+          <div class="query-card">
+            <div class="query-tabs" role="tablist" aria-label="Analysis query examples">
+              <button type="button" role="tab" aria-selected="true" data-query="funnel">Funnel SQL</button>
+              <button type="button" role="tab" aria-selected="false" data-query="retention">Retention SQL</button>
+              <button type="button" role="tab" aria-selected="false" data-query="experiment">Experiment Python</button>
+            </div>
+            <pre><code id="query-code">SELECT
+  COUNT(*) AS signed_up,
+  SUM(completed_onboarding) AS onboarded,
+  SUM(activated) AS activated,
+  SUM(subscribed) AS subscribed
+FROM user_journeys;</code></pre>
+          </div>
+        </section>
+
+        <footer>
+          <span>Product Signal Lab</span>
+          <span>Deterministic synthetic data · Python 3 · SQLite</span>
+        </footer>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
